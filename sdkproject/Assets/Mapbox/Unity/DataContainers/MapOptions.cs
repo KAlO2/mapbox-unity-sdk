@@ -9,6 +9,8 @@
 		public MapExtentOptions extentOptions = new MapExtentOptions(MapExtentType.RangeAroundCenter);
 		public MapPlacementOptions placementOptions = new MapPlacementOptions();
 		public MapScalingOptions scalingOptions = new MapScalingOptions();
+		public MapLanguageOptions languageOptions = new MapLanguageOptions();
+
 		[Tooltip("Texture used while tiles are loading.")]
 		public Texture2D loadingTexture = null;
 		public Material tileMaterial = null;

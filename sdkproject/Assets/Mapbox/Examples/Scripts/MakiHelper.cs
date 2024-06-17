@@ -4,6 +4,8 @@ namespace Mapbox.Examples
 	using UnityEngine;
 	using UnityEngine.UI;
 	using Mapbox.Unity.MeshGeneration.Interfaces;
+	using Mapbox.Unity;
+	using Mapbox.Unity.Map;
 
 	public class MakiHelper : MonoBehaviour, IFeaturePropertySettable
 	{
@@ -28,9 +30,15 @@ namespace Mapbox.Examples
 				_uiObject = Instantiate(UiPrefab);
 				_uiObject.transform.SetParent(Parent);
 				_uiObject.transform.Find("Image").GetComponent<Image>().sprite = Resources.Load<Sprite>("maki/" + props["maki"].ToString() + "-15");
-				if (props.ContainsKey("name"))
+
+				AbstractMap map = FindObjectOfType<AbstractMap>();
+				string language = map.Options.languageOptions.GetLanguageNameMapbox();
+
+				object value = null;
+				if (props.TryGetValue("name_" + language, out value) ||
+						props.TryGetValue("name", out value))
 				{
-					_uiObject.GetComponentInChildren<Text>().text = props["name"].ToString();
+					_uiObject.GetComponentInChildren<Text>().text = value.ToString();
 				}
 			}
 		}

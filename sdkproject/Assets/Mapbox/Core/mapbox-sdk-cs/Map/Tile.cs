@@ -131,7 +131,8 @@ namespace Mapbox.Map
 			_state = State.Loading;
 			_id = param.Id;
 			_callback = callback;
-			_request = param.Fs.Request(MakeTileResource(param.TilesetId).GetUrl(), HandleTileResponse, tileId: _id, tilesetId: param.TilesetId);
+			string url = MakeTileResource(param.TilesetId).GetUrl();
+			_request = param.Fs.Request(url, HandleTileResponse, tileId: _id, tilesetId: param.TilesetId);
 		}
 
 		internal void Initialize(IFileSource fileSource, CanonicalTileId canonicalTileId, string tilesetId, Action p)
@@ -141,7 +142,8 @@ namespace Mapbox.Map
 			_state = State.Loading;
 			_id = canonicalTileId;
 			_callback = p;
-			_request = fileSource.Request(MakeTileResource(tilesetId).GetUrl(), HandleTileResponse, tileId: _id, tilesetId: tilesetId);
+			string url = MakeTileResource(tilesetId).GetUrl();
+			_request = fileSource.Request(url, HandleTileResponse, tileId: _id, tilesetId: tilesetId);
 		}
 
 		/// <summary>
