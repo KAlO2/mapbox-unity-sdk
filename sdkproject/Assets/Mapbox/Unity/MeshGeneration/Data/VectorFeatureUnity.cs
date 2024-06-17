@@ -26,13 +26,10 @@ namespace Mapbox.Unity.MeshGeneration.Data
 			Points = new List<List<Vector3>>();
 		}
 
-		public VectorFeatureUnity(VectorTileFeature feature, UnityTile tile, float layerExtent, bool buildingsWithUniqueIds = false)
+		public VectorFeatureUnity(VectorTileFeature feature, UnityTile tile, float layerExtent, bool buildingsWithUniqueIds = false):
+				this(feature, (buildingsWithUniqueIds? feature.Geometry<float>(): feature.Geometry<float>(0)), tile, layerExtent, buildingsWithUniqueIds)
 		{
-			Data = feature;
-			Properties = Data.GetProperties();
-			Points.Clear();
-			Tile = tile;
-
+#if false  // The content is moved to this(), keep it commented here for further understanding.
 			//this is a temp hack until we figure out how streets ids works
 			if (buildingsWithUniqueIds == true) //ids from building dataset is big ulongs 
 			{
@@ -42,22 +39,7 @@ namespace Mapbox.Unity.MeshGeneration.Data
 			{
 				_geom = feature.Geometry<float>(0); //passing zero means clip at tile edge
 			}
-
-			_rectSizex = tile.Rect.Size.x;
-			_rectSizey = tile.Rect.Size.y;
-
-			_geomCount = _geom.Count;
-			for (int i = 0; i < _geomCount; i++)
-			{
-				_pointCount = _geom[i].Count;
-				_newPoints = new List<Vector3>(_pointCount);
-				for (int j = 0; j < _pointCount; j++)
-				{
-					var point = _geom[i][j];
-					_newPoints.Add(new Vector3((float)(point.X / layerExtent * _rectSizex - (_rectSizex / 2)) * tile.TileScale, 0, (float)((layerExtent - point.Y) / layerExtent * _rectSizey - (_rectSizey / 2)) * tile.TileScale));
-				}
-				Points.Add(_newPoints);
-			}
+#endif
 		}
 
 		public VectorFeatureUnity(VectorTileFeature feature, List<List<Point2d<float>>> geom, UnityTile tile, float layerExtent, bool buildingsWithUniqueIds = false)
@@ -79,7 +61,9 @@ namespace Mapbox.Unity.MeshGeneration.Data
 				for (int j = 0; j < _pointCount; j++)
 				{
 					var point = _geom[i][j];
-					_newPoints.Add(new Vector3((float)(point.X / layerExtent * _rectSizex - (_rectSizex / 2)) * tile.TileScale, 0, (float)((layerExtent - point.Y) / layerExtent * _rectSizey - (_rectSizey / 2)) * tile.TileScale));
+					float x = (float)(point.X / layerExtent * _rectSizex - (_rectSizex / 2)) * tile.TileScale;
+					float z = (float)((layerExtent - point.Y) / layerExtent * _rectSizey - (_rectSizey / 2)) * tile.TileScale;
+					_newPoints.Add(new Vector3(x, 0, z));
 				}
 				Points.Add(_newPoints);
 			}
@@ -93,9 +77,10 @@ namespace Mapbox.Unity.MeshGeneration.Data
 
 			if (Points.Count > 0)
 			{
-				var from = Conversions.LatLonToMeters(coord.x, coord.y);
-
-				var to = new Vector2d((Points[0][0].x / Tile.TileScale) + Tile.Rect.Center.x, (Points[0][0].z / Tile.TileScale) + Tile.Rect.Center.y);
+				Vector2d from = Conversions.LatLonToMeters(coord.x, coord.y);
+				List<Vector3> points = Points[0];
+				Vector3 point_ = points[0];
+				Vector2d to = new Vector2d(point_.x, point_.z) / Tile.TileScale + Tile.Rect.Center;
 				var dist = Vector2d.Distance(from, to);
 				if (Mathd.Abs(dist) < 50)
 				{
