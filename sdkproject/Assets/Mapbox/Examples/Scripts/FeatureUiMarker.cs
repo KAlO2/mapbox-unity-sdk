@@ -30,7 +30,9 @@
 
 		internal void Show(VectorEntity selectedFeature)
 		{
-			if (selectedFeature == null)
+			// Shift + LMB key: unselect feature if selected one
+			bool isShiftPressed = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
+			if (selectedFeature == null || isShiftPressed)
 			{
 				Clear();
 				return;
