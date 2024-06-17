@@ -10,7 +10,7 @@ namespace Mapbox.Unity.MeshGeneration.Data
 	{
 		public Vector3 PositionInTile;
 		public List<int> Edges;
-		public Vector2 MercatorCenter;
+//		public Vector2 MercatorCenter;
 		public RectD TileRect;
 		public List<Vector3> Vertices;
 		public List<Vector3> Normals;
