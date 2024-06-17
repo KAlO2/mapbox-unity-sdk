@@ -5,6 +5,7 @@
 	using UnityEngine.UI;
 	using System.Linq;
 	using System.Text;
+	using UnityEngine.EventSystems;
 
 	public class FeatureUiMarker : MonoBehaviour
 	{
@@ -20,7 +21,11 @@
 
 		void Update()
 		{
-			Snap();
+			bool isPointerOverGameObject = EventSystem.current.IsPointerOverGameObject();
+			if (isPointerOverGameObject)
+				Clear();
+			else
+				Snap();
 		}
 
 		internal void Clear()

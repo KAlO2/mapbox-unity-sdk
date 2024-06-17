@@ -8,8 +8,12 @@
 		private FeatureUiMarker _marker;
 		private VectorEntity _feature;
 
+		private static VectorEntity selectedFeature;
+		public static VectorEntity GetSelectedFeature() { return selectedFeature; }
+
 		public void OnMouseUpAsButton()
 		{
+			selectedFeature = _feature;
 			_marker.Show(_feature);
 		}
 

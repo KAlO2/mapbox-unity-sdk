@@ -37,9 +37,9 @@ namespace Mapbox.Examples
 				_canvas = go.GetComponent<Canvas>();
 				_canvas.renderMode = RenderMode.ScreenSpaceOverlay;
 
-				var sel = Instantiate(Resources.Load<GameObject>("selector"));
-				sel.transform.SetParent(_canvas.transform);
-				_marker = sel.GetComponent<FeatureUiMarker>();
+				GameObject selector = Instantiate(Resources.Load<GameObject>("selector"));
+				selector.transform.SetParent(_canvas.transform);
+				_marker = selector.GetComponent<FeatureUiMarker>();
 			}
 		}
 
@@ -59,6 +59,8 @@ namespace Mapbox.Examples
 
 		public override void Clear()
 		{
+			Destroy(_marker);
+			_marker = null;
 			if (_canvas != null)
 			{
 				_canvas.gameObject.Destroy();
