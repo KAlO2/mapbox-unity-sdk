@@ -57,10 +57,8 @@
 
 		public List<string> PrefabLocations
 		{
-			set
-			{
-				_prefabLocations = value;
-			}
+			get { return  _prefabLocations; }
+			set { _prefabLocations = value; }
 		}
 
 		public List<string> BlockedIds
@@ -196,7 +194,7 @@
 			}
 		}
 
-		private void SpawnPrefab(VectorEntity ve, UnityTile tile, Vector2d latLong)
+		public void SpawnPrefab(VectorEntity ve, UnityTile tile, Vector2d latLong)
 		{
 			GameObject go;
 

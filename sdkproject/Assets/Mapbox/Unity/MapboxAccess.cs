@@ -70,11 +70,11 @@ namespace Mapbox.Unity
 			}
 		}
 
-		public void SetConfiguration(MapboxConfiguration configuration, bool throwExecptions = true)
+		public void SetConfiguration(MapboxConfiguration configuration, bool throwExceptions = true)
 		{
 			if (configuration == null)
 			{
-				if (throwExecptions)
+				if (throwExceptions)
 				{
 					throw new InvalidTokenException(_tokenNotSetErrorMessage);
 				}
@@ -95,7 +95,7 @@ namespace Mapbox.Unity
 					}
 
 					if (response.Status != MapboxTokenStatus.TokenValid
-					   && throwExecptions)
+					   && throwExceptions)
 					{
 						configuration.AccessToken = string.Empty;
 						Debug.LogError(new InvalidTokenException(response.Status.ToString().ToString()));
@@ -331,7 +331,7 @@ namespace Mapbox.Unity
 	{
 		[NonSerialized] private MapboxAccounts mapboxAccounts = new MapboxAccounts();
 
-		public string AccessToken;
+		public string AccessToken = "pk.eyJ1IjoibWFydGluNnRheWxvciIsImEiOiJjbHZrOXozMGQxeHo4MnFucThwdHl2MmhqIn0.2MnQ4u6de_ia6A6MWQo5Uw";
 		public uint MemoryCacheSize = 500;
 		public uint FileCacheSize = 2500;
 		public int DefaultTimeout = 30;
