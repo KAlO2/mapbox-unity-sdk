@@ -6,6 +6,7 @@ using Mapbox.Unity.MeshGeneration.Interfaces;
 using Mapbox.Map;
 using Mapbox.Unity.Map;
 using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Mapbox.Unity.MeshGeneration.Factories
 {
@@ -142,15 +143,23 @@ namespace Mapbox.Unity.MeshGeneration.Factories
 			return visualizer;
 		}
 
-		public List<LayerVisualizerBase> FindVectorLayerVisualizer(string key)
+		[return: NotNull]
+		public List<VectorLayerVisualizer> FindVectorLayerVisualizer(string key)
 		{
-			List<LayerVisualizerBase> value;
-			if (_layerBuilder.TryGetValue(key, out value))
-				return value;
-			else
-				return null;
+			List<VectorLayerVisualizer> vectorLayerVisualizer = new List<VectorLayerVisualizer>();
+			List<LayerVisualizerBase> layerVisualizers;
+			if (_layerBuilder.TryGetValue(key, out layerVisualizers))
+			{
+				foreach (LayerVisualizerBase layerVisualizer in layerVisualizers)
+				{
+					if (layerVisualizer is VectorLayerVisualizer)
+						vectorLayerVisualizer.Add((VectorLayerVisualizer)layerVisualizer);
+				}
+			}
+
+			return vectorLayerVisualizer;
 		}
-		
+
 		public virtual LayerVisualizerBase FindVectorLayerVisualizer(VectorSubLayerProperties subLayer)
 		{
 			if (_layerBuilder.ContainsKey(subLayer.Key))
