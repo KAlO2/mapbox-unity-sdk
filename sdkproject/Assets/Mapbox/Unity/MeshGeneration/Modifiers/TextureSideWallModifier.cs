@@ -105,9 +105,20 @@ namespace Mapbox.Unity.MeshGeneration.Modifiers
 			if (tile != null)
 				_scale = tile.TileScale;
 
+			//read or force height
+			float maxHeight = 1, minHeight = 0;
+			QueryHeight(feature, md, tile, out maxHeight, out minHeight);
+
 			//facade texture to decorate this building
-			_currentFacade =
-				_options.atlasInfo.Textures[UnityEngine.Random.Range(0, _options.atlasInfo.Textures.Count)];
+			int index = 0;
+#if HEIGHT_BINARY_STYLE
+			if(_options.heightThreshold > 0)
+				index = (_options.atlasInfo.Textures.Count == 1 || maxHeight <= _options.heightThreshold) ? 0 : 1;
+			else
+#endif
+				index = UnityEngine.Random.Range(0, _options.atlasInfo.Textures.Count);
+
+			_currentFacade = _options.atlasInfo.Textures[index];
 			//rect is a struct so we're caching this
 			_currentTextureRect = _currentFacade.TextureRect;
 
@@ -119,12 +130,11 @@ namespace Mapbox.Unity.MeshGeneration.Modifiers
 			_scaledFloorHeight = _scaledPreferredWallLength * _currentFacade.WallToFloorRatio;
 			_singleColumnLength = _scaledPreferredWallLength / _currentFacade.ColumnCount;
 
-			//read or force height
-			float maxHeight = 1, minHeight = 0;
+
 
 			//query height and push polygon up to create roof
 			//can we do this vice versa and create roof at last?
-			QueryHeight(feature, md, tile, out maxHeight, out minHeight);
+
 			maxHeight = maxHeight * _options.extrusionScaleFactor * _scale;
 			minHeight = minHeight * _options.extrusionScaleFactor * _scale;
 			height = (maxHeight - minHeight);

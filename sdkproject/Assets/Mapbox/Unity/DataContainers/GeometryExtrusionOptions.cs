@@ -30,6 +30,9 @@ namespace Mapbox.Unity.Map
 		[Tooltip("Scale factor to multiply the extrusion value of the feature.")]
 		public float extrusionScaleFactor = 1f;
 
+#if HEIGHT_BINARY_STYLE
+		public float heightThreshold = 0f;
+#endif
 		public GeometryExtrusionWithAtlasOptions ToGeometryExtrusionWithAtlasOptions()
 		{
 			return new GeometryExtrusionWithAtlasOptions(this);
@@ -231,7 +234,9 @@ namespace Mapbox.Unity.Map
 		public float minimumHeight = 0f;
 		public float maximumHeight = 0f;
 		public float extrusionScaleFactor = 1f;
-
+#if HEIGHT_BINARY_STYLE
+		public float heightThreshold = 0f;  // if T > 0, then h < T use one material; h >= T use another material
+#endif
 		public GeometryExtrusionWithAtlasOptions()
 		{
 
@@ -244,7 +249,9 @@ namespace Mapbox.Unity.Map
 			minimumHeight = extrusionOptions.minimumHeight;
 			maximumHeight = extrusionOptions.maximumHeight;
 			extrusionScaleFactor = extrusionOptions.extrusionScaleFactor;
-
+#if HEIGHT_BINARY_STYLE
+			heightThreshold = extrusionOptions.heightThreshold;
+#endif
 			texturingType = uvOptions.texturingType;
 			atlasInfo = uvOptions.atlasInfo;
 		}
@@ -257,6 +264,9 @@ namespace Mapbox.Unity.Map
 			minimumHeight = extrusionOptions.minimumHeight;
 			maximumHeight = extrusionOptions.maximumHeight;
 			extrusionScaleFactor = extrusionOptions.extrusionScaleFactor;
+#if HEIGHT_BINARY_STYLE
+			heightThreshold = extrusionOptions.heightThreshold;
+#endif
 		}
 
 		public GeometryExtrusionWithAtlasOptions(UVModifierOptions uvOptions)
