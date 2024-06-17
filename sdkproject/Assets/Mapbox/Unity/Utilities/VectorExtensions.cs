@@ -127,13 +127,12 @@ namespace Mapbox.Unity.Utilities
 		/// </example>
 		public static Vector2d GetGeoPosition(this Transform t, Vector2d refPoint, float scale = 1)
 		{
-			var pos = refPoint + (t.position / scale).ToVector2d();
-			return Conversions.MetersToLatLon(pos);
+			return GetGeoPosition(t.position, refPoint, scale);
 		}
 
 		public static Vector2d GetGeoPosition(this Vector3 position, Vector2d refPoint, float scale = 1)
 		{
-			var pos = refPoint + (position / scale).ToVector2d();
+			Vector2d pos = refPoint + new Vector2d((double)position.x / scale, (double)position.z / scale);
 			return Conversions.MetersToLatLon(pos);
 		}
 

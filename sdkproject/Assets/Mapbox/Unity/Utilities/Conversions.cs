@@ -146,8 +146,8 @@ namespace Mapbox.Unity.Utilities
 		/// </example>
 		public static Vector2d MetersToLatLon(Vector2d m)
 		{
-			var vx = (m.x / OriginShift) * 180;
-			var vy = (m.y / OriginShift) * 180;
+			double vx = (m.x / OriginShift) * 180;
+			double vy = (m.y / OriginShift) * 180;
 			vy = 180 / Math.PI * (2 * Math.Atan(Math.Exp(vy * Math.PI / 180)) - Math.PI / 2);
 			return new Vector2d(vy, vx);
 		}
