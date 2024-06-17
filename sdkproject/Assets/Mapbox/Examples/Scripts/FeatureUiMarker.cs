@@ -75,18 +75,16 @@
 			_wrapperMarker.position = new Vector2(left - margin, top + margin);
 			(_wrapperMarker as RectTransform).sizeDelta = new Vector2(right - left + margin * 2, top - bottom + margin * 2);
 			
-			_infoPanel.position = new Vector2(right + margin, top + margin);
-			
 			StringBuilder sb = new StringBuilder(256);
 			foreach(var property in _selectedFeature.Feature.Properties)
 				sb.Append(property.Key).Append(" = ").Append(property.Value).Append(System.Environment.NewLine);
 			sb.Append("position = ").Append(_selectedFeature.Transform.position.ToString());
 			
 			string content = sb.ToString();
-			//System.Collections.Generic.IEnumerable<string> content = _selectedFeature.Feature.Properties.Select(x => x.Key + " = " + x.Value.ToString());
-			//content.Append("position = " + _selectedFeature.Transform.position.ToString());
-			//_info.text = string.Join(" \r\n ", content.ToArray());
 			_info.text = content;
+
+			float infoHeight = _info.rectTransform.sizeDelta.y;  // FIXME: not correct
+			_infoPanel.position = new Vector2(right + margin, bottom - margin + infoHeight);
 		}
 	}
 }
